@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  h1= title
+  each review in reviewsTab
+    p #{review.name}
+    p #{review.placeType}
+    p #{review.stars}
