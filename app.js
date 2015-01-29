@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var reviews = require('./routes/reviews');
 
 var app = express();
+var db = require('./database/index');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
