@@ -6,9 +6,36 @@ var Reviews = require('../database/Reviews');
 var _ = require('lodash');
 
 
+// Top 3
+router.route('/topPlace')
+	.get(function (req, res) {
+		var options = {
+			"limit": 3,
+			"sort": "-stars"
+		};
+		Reviews.find({}, null, options, function(err, reviews) {
+			if (err) {
+				res.status(500).send({'error': err});
+			} else {
+				//res.status(200).send(reviews);				
+				res.status(200);
+				var accept = req.get('Accept');
+				if(accept.indexOf("html")){
+					res.render('topReviews', { title: 'Reviews', elements: reviews });
+				} else {
+					res.send(reviews);
+				}
+			}
+		});
+	});
+
+// Actions on all reviews
 router.route('/')
 	.get(function (req, res) {
-		Reviews.find({}, function (err, reviews) {
+		var options = {
+			"sort": "name"
+		}
+		Reviews.find({}, null, options, function (err, reviews) {
 			if (err) {
 				res.status(500).send({'error': err});
 			} else {
@@ -17,8 +44,7 @@ router.route('/')
 				var accept = req.get('Accept');
 				if(accept.indexOf("html")){
 					res.render('reviews', { title: 'Reviews', elements: reviews });
-				}
-				else{
+				} else {
 					res.send(reviews);
 				}
 			}
@@ -31,7 +57,14 @@ router.route('/')
 				if (err) {
 					res.status(500).send({'error': err});
 				}
-				res.status(201).send(review);
+				//res.status(201).send(review);
+				res.status(201);
+				var accept = req.get('Accept');
+				if(accept.indexOf("html")){
+					res.render('oneReview', { title: 'Review', element: review });
+				} else {
+					res.send(review);
+				}
 			});
 		}
 		else {
@@ -54,9 +87,15 @@ router.route('/:id')
 				res.status(500).send({'error': err});
 			} else {
 				if (!review) {
-					res.status(404).send();
+					res.status(404).send("Review not find");
 				} else {
-					res.status(200).send(review);
+					res.status(200);
+					var accept = req.get('Accept');
+					if(accept.indexOf("html")) {
+						res.render('oneReview', {title: 'Reviews', element: review})
+					} else {
+						res.send(review);
+					}
 				}
 			}
 		});
@@ -73,7 +112,7 @@ router.route('/:id')
 		} else {
 			res.status(400).send("Worst Request Ever !");
 		}
-	})
+	}) 
 	.delete(function (req, res) {
 		Reviews.remove({_id: req.params.id}, function (err) {
 			if(err) {
@@ -82,92 +121,5 @@ router.route('/:id')
 			res.status(200).send();
 		});
 	});
-
-
-
-
-/*
-var reviews = [
-	{
-		name: 'McDo',
-		placeType: 'FastFood',
-		stars: 3
-	},
-	{
-		name: 'McDo1',
-		placeType: 'FastFood',
-		stars: 3
-	},	
-	{
-		name: 'McDo2',
-		placeType: 'FastFood2',
-		stars: 1
-	}
-];
-
-router.get('/', function(req, res, next) {
-	if(!reviews[0]) {
-		res.status(404).send();
-	} else {
-		res.status(200).send(reviews);
-		//res.render('reviews', {title: 'Reviews', reviewsTab: reviews});
-	}
-});
-
-router.post('/', function(req, res) {
-	if(req.body.name && req.body.placeType && req.body.stars) {
-		reviews.push({
-			name: req.body.name, 
-			placeType: req.body.placeType, 
-			stars: req.body.stars
-		});
-		res.status(201).send(reviews);
-	} else {
-		res.status(400).send("Worst Request Ever !");
-	}
-});
-
-router.delete('/', function(req, res) {
-	if(!reviews[0]) {
-		res.status(404).send("Empty Array !");
-	} else {
-		reviews = [];
-		res.status(202).send(reviews);
-	}
-});
-
-router.get('/:id', function(req, res, next) {
-	if(!reviews[id]) {
-		res.status(404).send();
-	} else {
-		var id = req.params.id;
-		res.status(200).send(reviews[id]);
-	}
-});
-
-router.put('/:id', function(req, res) {
-	if(req.body.name && req.body.placeType && req.body.stars) {
-		var id = req.params.id;	
-		reviews[id].name = req.body.name;
-		reviews[id].placeType = req.body.placeType; 
-		reviews[id].stars = req.body.stars;
-		res.status(200).send(reviews);
-	} else {
-		res.status(400).send("Worst Request Ever !");
-	}
-});
-
-router.delete('/:id', function(req, res) {
-	var id = req.params.id;
-	console.log(reviews[id]);
-	if(!reviews[id]) {
-		res.status(404).send();
-	} else {
-		_.pullAt(reviews, id);
-		res.status(202).send(reviews);
-	}
-});
-*/
-
 
 module.exports = router;
