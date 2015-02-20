@@ -1,8 +1,22 @@
 extends layout
 
 block content
-  h1= title
-  each review in reviewsTab
-    p #{review.name}
-    p #{review.placeType}
-    p #{review.stars}
+	table(style="border: 3px solid black")
+		th
+		th Name
+		th Type
+		th Star(s)
+		th 
+		each e in elements
+			tr
+				td
+					a(href='/reviews/' + e._id) 
+						img(src="/img/info.png", alt="more infos...")
+				td= e.name
+				td= e.placeType
+				td
+					- for (var x = 0; x < e.stars; x++)
+						img(src="/img/stars.png", alt="review stars")
+				td
+					a(href='')
+						img(src="/img/delete.png", alt="delete review")

@@ -12,7 +12,15 @@ router.route('/')
 			if (err) {
 				res.status(500).send({'error': err});
 			} else {
-				res.status(200).send(reviews);				
+				//res.status(200).send(reviews);				
+				res.status(200);
+				var accept = req.get('Accept');
+				if(accept.indexOf("html")){
+					res.render('reviews', { title: 'Reviews', elements: reviews });
+				}
+				else{
+					res.send(reviews);
+				}
 			}
 		});
 	})
@@ -37,6 +45,8 @@ router.route('/')
 	});
 
 
+
+// Actions with 'id'
 router.route('/:id')
 	.get(function (req, res) {
 		Reviews.findOne({_id: req.params.id}, function (err, review) {
