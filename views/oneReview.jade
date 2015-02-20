@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	h1=element.name
+	h2=element.placeType
+	- for (var nbStars = 0; nbStars < element.stars; nbStars++)
+		img(class="imgInfo", src="/img/stars.png", alt="review stars")
+	p
+		a(href="/") Back to the list.

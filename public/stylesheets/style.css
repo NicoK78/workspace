@@ -10,3 +10,11 @@ a {
 img {
 	width: 15px;
 }
+
+.imgInfo {
+	width: 30px;
+}
+
+td {
+	min-width: 50px;
+}

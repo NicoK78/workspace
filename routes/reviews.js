@@ -17,8 +17,7 @@ router.route('/')
 				var accept = req.get('Accept');
 				if(accept.indexOf("html")){
 					res.render('reviews', { title: 'Reviews', elements: reviews });
-				}
-				else{
+				} else {
 					res.send(reviews);
 				}
 			}
@@ -31,7 +30,14 @@ router.route('/')
 				if (err) {
 					res.status(500).send({'error': err});
 				}
-				res.status(201).send(review);
+				//res.status(201).send(review);
+				res.status(201);
+				var accept = req.get('Accept');
+				if(accept.indexOf("html")){
+					res.render('oneReview', { title: 'Review', element: review });
+				} else {
+					res.send(review);
+				}
 			});
 		}
 		else {
@@ -54,9 +60,15 @@ router.route('/:id')
 				res.status(500).send({'error': err});
 			} else {
 				if (!review) {
-					res.status(404).send();
+					res.status(404).send("Review not find");
 				} else {
-					res.status(200).send(review);
+					res.status(200);
+					var accept = req.get('Accept');
+					if(accept.indexOf("html")) {
+						res.render('oneReview', {title: 'Reviews', element: review})
+					} else {
+						res.send(review);
+					}
 				}
 			}
 		});
