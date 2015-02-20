@@ -22,23 +22,20 @@ block content
 			tr
 				input(type='submit', value='Add')
 
-	h1 PLACE(S)
+	h1 Place(s)
 	table(style="border: 3px solid black")
-		th
 		th Name
 		th Type
 		th Star(s)
-		th 
 		each e in elements
 			tr
-				td
-					a(href='/reviews/' + e._id) 
-						img(src="/img/info.png", alt="more infos...")
 				td= e.name
 				td= e.placeType
 				td
-					- for (var nbStars = 0; nbStars < e.stars; nbStars++)
+					- for (var nbStars = 0; nbStars < e.stars && nbStars <5; nbStars++)
 						img(src="/img/stars.png", alt="review stars")
 				td
 					a(href='')
-						img(src="/img/delete.png", onClick='deleteOneReview("#{e._id}")')
+						img(src="/img/delete.png", onClick='deleteReview("#{e._id}")')
+					a(href='/reviews/' + e._id) 
+						img(src="/img/info.png", alt="more infos...")
