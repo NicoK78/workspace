@@ -1,4 +1,5 @@
-function deleteOneReview(id) {
+function deleteReview(id) {
+
 	var review = document.getElementById(id);
 	var myRequest = new XMLHttpRequest();
 	myRequest.onreadystatechange = function(id) {
@@ -9,4 +10,5 @@ function deleteOneReview(id) {
 	myRequest.open('DELETE', '/reviews/'+id);
 	myRequest.send();
 	location.reload();
+	
 }
