@@ -1,0 +1,41 @@
+extends layout
+
+block content
+	h1 Add a review.
+	form(method='POST' action='/reviews')
+		table
+			tr
+				td
+					legend Name
+				td
+					input(id='reviewName', type='text', name="name")
+			tr
+				td
+					legend Type
+				td
+					input(id='reviewPlaceType', type='text', name="placeType")
+			tr
+				td
+					legend Rate
+				td
+					input(id='reviewStars', type='text', name="stars")
+			tr
+				input(type='submit', value='Add')
+
+	h1 Place(s)
+	table(style="border: 3px solid black")
+		th Name
+		th Type
+		th Star(s)
+		each e in elements
+			tr
+				td= e.name
+				td= e.placeType
+				td
+					- for (var nbStars = 0; nbStars < e.stars && nbStars <5; nbStars++)
+						img(src="/img/stars.png", alt="review stars")
+				td
+					a(href='')
+						img(src="/img/delete.png", onClick='deleteReview("#{e._id}")')
+					a(href='/reviews/' + e._id) 
+						img(src="/img/info.png", alt="more infos...")
